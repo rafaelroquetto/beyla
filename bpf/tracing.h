@@ -21,6 +21,7 @@ struct {
     __type(key, connection_info_t); // key: the connection info
     __type(value, tp_info_pid_t);   // value: traceparent info
     __uint(max_entries, MAX_CONCURRENT_REQUESTS);
+    __uint(pinning, BEYLA_PIN_INTERNAL);
 } incoming_trace_map SEC(".maps");
 
 struct {
@@ -28,9 +29,10 @@ struct {
     __type(key, connection_info_t); // key: the connection info
     __type(value, tp_info_pid_t);   // value: traceparent info
     __uint(max_entries, MAX_CONCURRENT_REQUESTS);
+    __uint(pinning, BEYLA_PIN_INTERNAL);
 } outgoing_trace_map SEC(".maps");
 
-static __always_inline void make_tp_string(unsigned char *buf, tp_info_t *tp) {
+static __always_inline void make_tp_string(unsigned char *buf, const tp_info_t *tp) {
     // Version
     *buf++ = '0';
     *buf++ = '0';
