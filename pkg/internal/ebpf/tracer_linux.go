@@ -225,7 +225,11 @@ func (pt *ProcessTracer) loadTracers() error {
 
 	for _, p := range pt.Programs {
 		if err := pt.loadTracer(p, log); err != nil {
-			return err
+			log.Warn("couldn't load tracer", "error", err, "required", p.Required())
+
+			if p.Required() {
+				return err
+			}
 		}
 	}
 
